@@ -118,12 +118,37 @@ This project uses Google Maps Places API for location autocomplete. To enable th
 
 ## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/f1ba0c74-af75-4389-a8ae-60baf80911b5) and click on Share -> Publish.
+### Automated Deployment via GitHub Pages
 
-## Can I connect a custom domain to my Lovable project?
+This project is configured to automatically deploy to GitHub Pages when changes are pushed to the main branch. The deployment workflow:
 
-Yes, you can!
+1. Builds the project using `npm run build`
+2. Deploys the `dist` folder to GitHub Pages
+3. Serves the site at the custom domain: **workhorse.africa**
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### DNS Configuration
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+To use the custom domain `workhorse.africa`, configure the following DNS records with your domain provider:
+
+For apex domain (workhorse.africa):
+```
+A     185.199.108.153
+A     185.199.109.153
+A     185.199.110.153
+A     185.199.111.153
+```
+
+Or use a CNAME record (if using www subdomain):
+```
+CNAME workhorse.africa -> jobbyist.github.io
+```
+
+### GitHub Pages Settings
+
+1. Go to repository Settings → Pages
+2. Set Source to "GitHub Actions"
+3. The custom domain `workhorse.africa` is configured via the CNAME file in the `public` directory
+
+### Manual Deployment via Lovable
+
+Alternatively, you can deploy via [Lovable](https://lovable.dev/projects/f1ba0c74-af75-4389-a8ae-60baf80911b5) by clicking Share → Publish.
