@@ -138,9 +138,9 @@ A     185.199.110.153
 A     185.199.111.153
 ```
 
-Or use a CNAME record (if using www subdomain):
+If you also want to support the www subdomain:
 ```
-CNAME workhorse.africa -> jobbyist.github.io
+CNAME www.workhorse.africa -> jobbyist.github.io
 ```
 
 ### GitHub Pages Settings
