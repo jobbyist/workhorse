@@ -145,9 +145,16 @@ CNAME workhorse.africa -> jobbyist.github.io
 
 ### GitHub Pages Settings
 
-1. Go to repository Settings → Pages
-2. Set Source to "GitHub Actions"
+To enable GitHub Pages deployment for this repository:
+
+1. Go to repository **Settings** → **Pages**
+2. Under "Build and deployment":
+   - **Source**: Select "GitHub Actions"
 3. The custom domain `workhorse.africa` is configured via the CNAME file in the `public` directory
+4. Once DNS is configured and propagated, GitHub will automatically verify the custom domain
+5. You can optionally enable "Enforce HTTPS" for secure connections
+
+**Note**: The workflow will automatically run on every push to the `main` branch. You can also trigger it manually from the Actions tab.
 
 ### Manual Deployment via Lovable
 
