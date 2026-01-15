@@ -1,1 +1,5 @@
 project_id = "mvouwzpxwnhisoojwvsf"
+
+[functions.cron-car-scraper]
+schedule = "0 6 * * *"
+verify_jwt = false

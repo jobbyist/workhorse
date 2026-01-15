@@ -459,7 +459,7 @@ const CreateEvent = () => {
                   <button
                     onClick={handleSubmit}
                     disabled={isSubmitting}
-                    className="flex h-[50px] justify-center items-center gap-2.5 border relative px-2.5 py-3.5 border-solid transition-all duration-300 ease-in-out w-[calc(100%-50px)] z-10 bg-foreground border-foreground group-hover:w-full group-hover:bg-[#FA76FF] group-hover:border-[#FA76FF] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex h-[50px] justify-center items-center gap-2.5 border relative px-2.5 py-3.5 border-solid transition-all duration-300 ease-in-out w-[calc(100%-50px)] z-10 bg-foreground border-foreground group-hover:w-full group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-blue-700 group-hover:border-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                     aria-label="Create event"
                   >
                     <span className="text-background text-[13px] font-normal uppercase relative transition-colors duration-300 group-hover:text-foreground">

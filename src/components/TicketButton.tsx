@@ -19,7 +19,7 @@ export const TicketButton: React.FC<TicketButtonProps> = ({ ticketUrl, ticketPri
       href={ticketUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group flex items-center justify-center gap-2 px-6 py-3 bg-[#FA76FF] text-foreground border border-foreground font-medium text-sm uppercase tracking-wider hover:bg-foreground hover:text-background transition-colors ${className}`}
+      className={`group flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white border border-blue-700 font-medium text-sm uppercase tracking-wider hover:from-blue-600 hover:via-blue-700 hover:to-blue-800 transition-colors ${className}`}
     >
       <Ticket className="w-4 h-4" />
       <span>{priceDisplay}</span>
