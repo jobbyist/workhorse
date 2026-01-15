@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
-import { Calendar } from '@/components/ui/calendar';
-import { Button } from '@/components/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { CalendarIcon } from 'lucide-react';
-import { format } from 'date-fns';
-import { cn } from '@/lib/utils';
 import arrowDown from '@/assets/arrow-down.png';
 import { SEOHead } from '@/components/SEOHead';
 import { EventsCarousel } from '@/components/EventsCarousel';
 import { RotatingBadge } from '@/components/RotatingBadge';
-import { CategoryFilter } from '@/components/CategoryFilter';
+import { VehicleSearch } from '@/components/VehicleSearch';
 import { LocationFilter } from '@/components/LocationFilter';
 import { VEHICLE_BRANDS, VehicleBrand } from '@/constants/eventCategories';
 
@@ -29,6 +23,8 @@ interface Vehicle {
   city: string | null;
   ticket_url: string | null;
   ticket_price: number | null;
+  year: number | null;
+  mileage: number | null;
 }
 
 const VehicleCard = ({
@@ -73,25 +69,43 @@ const VehicleCard = ({
             <div className="text-[11px] font-medium uppercase leading-none">{brandInfo.label}</div>
           </div>
         )}
+        {vehicle.year && (
+          <div className="bg-background border border-t-0 border-foreground px-3 h-[23px] flex items-center">
+            <div className="text-[11px] font-medium uppercase leading-none">{vehicle.year}</div>
+          </div>
+        )}
         {isNew && (
           <div className="bg-[#4ADE80] border border-t-0 border-foreground px-3 h-[23px] flex items-center">
-            <div className="text-[11px] font-medium uppercase leading-none">NEW LISTING</div>
+            <div className="text-[11px] font-medium uppercase leading-none">NEW</div>
           </div>
         )}
       </div>
-      <h3 className="text-lg font-medium">{vehicle.title}</h3>
+      {vehicle.mileage && (
+        <div className="absolute top-4 right-4">
+          <div className="bg-background border border-foreground px-2 h-[23px] flex items-center">
+            <div className="text-[11px] font-medium leading-none">
+              {(vehicle.mileage / 1000).toFixed(0)}k km
+            </div>
+          </div>
+        </div>
+      )}
+      <h3 className="text-lg font-medium line-clamp-1">{vehicle.title}</h3>
       <p className="text-sm text-muted-foreground mt-1">{vehicle.address}</p>
     </div>
   );
 };
 
 const Discover = () => {
-  const [date, setDate] = useState<Date | undefined>(undefined);
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
   const [userCountry, setUserCountry] = useState<string>('South Africa');
-  const [initialDateSet, setInitialDateSet] = useState(false);
+  
+  // Search and filter state
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectedBrand, setSelectedBrand] = useState<VehicleBrand | null>(null);
+  const [priceRange, setPriceRange] = useState<[number | null, number | null]>([null, null]);
+  const [yearRange, setYearRange] = useState<[number | null, number | null]>([null, null]);
+  const [mileageMax, setMileageMax] = useState<number | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
 
@@ -99,12 +113,6 @@ const Discover = () => {
     fetchVehicles();
     detectUserCountry();
   }, []);
-
-  useEffect(() => {
-    if (!initialDateSet && vehicles.length > 0) {
-      setInitialDateSet(true);
-    }
-  }, [vehicles, initialDateSet]);
 
   const detectUserCountry = async () => {
     try {
@@ -121,11 +129,10 @@ const Discover = () => {
           'EG': 'Egypt', 'MU': 'Mauritius', 'ZM': 'Zambia', 'ZW': 'Zimbabwe',
           'NA': 'Namibia', 'MZ': 'Mozambique', 'AO': 'Angola', 'CM': 'Cameroon'
         };
-        setUserCountry(countryNames[countryCode] || 'Africa');
+        setUserCountry(countryNames[countryCode] || 'South Africa');
       }
     } catch (error) {
       if (import.meta.env.DEV) console.error('Error detecting country:', error);
-      setUserCountry('Africa');
     }
   };
 
@@ -133,7 +140,7 @@ const Discover = () => {
     try {
       const { data, error } = await supabase
         .from('events')
-        .select('id, title, date, time, background_image_url, target_date, address, category, country, city, ticket_url, ticket_price')
+        .select('id, title, date, time, background_image_url, target_date, address, category, country, city, ticket_url, ticket_price, year, mileage')
         .order('target_date', { ascending: false });
 
       if (error) throw error;
@@ -146,8 +153,29 @@ const Discover = () => {
   };
 
   const filteredVehicles = vehicles.filter((vehicle) => {
+    // Search query filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      const matchesSearch = 
+        vehicle.title.toLowerCase().includes(query) ||
+        vehicle.address.toLowerCase().includes(query) ||
+        (vehicle.category && vehicle.category.toLowerCase().includes(query));
+      if (!matchesSearch) return false;
+    }
+    
     // Brand filter
     if (selectedBrand && vehicle.category !== selectedBrand) return false;
+    
+    // Price range filter
+    if (priceRange[0] && (vehicle.ticket_price === null || vehicle.ticket_price < priceRange[0])) return false;
+    if (priceRange[1] && (vehicle.ticket_price === null || vehicle.ticket_price > priceRange[1])) return false;
+    
+    // Year range filter
+    if (yearRange[0] && (vehicle.year === null || vehicle.year < yearRange[0])) return false;
+    if (yearRange[1] && (vehicle.year === null || vehicle.year > yearRange[1])) return false;
+    
+    // Mileage filter
+    if (mileageMax && (vehicle.mileage === null || vehicle.mileage > mileageMax)) return false;
     
     // Country filter
     if (selectedCountry && vehicle.country !== selectedCountry) return false;
@@ -165,13 +193,17 @@ const Discover = () => {
     });
   };
 
-  const clearFilters = () => {
+  const clearAllFilters = () => {
+    setSearchQuery('');
     setSelectedBrand(null);
+    setPriceRange([null, null]);
+    setYearRange([null, null]);
+    setMileageMax(null);
     setSelectedCountry(null);
     setSelectedCity(null);
   };
 
-  const hasActiveFilters = selectedBrand || selectedCountry || selectedCity;
+  const hasActiveFilters = searchQuery || selectedBrand || priceRange[0] || priceRange[1] || yearRange[0] || yearRange[1] || mileageMax || selectedCountry || selectedCity;
 
   return (
     <div className="min-h-screen bg-background">
@@ -215,39 +247,51 @@ const Discover = () => {
       {/* Listings Section */}
       <section id="listings-section" className="px-4 md:px-8 pb-16 pt-6 md:pt-16">
         <div>
-          {/* Filters Header */}
+          {/* Search & Filters */}
           <div className="mb-6 md:mb-8 animate-fade-in space-y-4" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
-            <div className="flex flex-wrap items-center gap-2 mb-4">
-              <h2 className="text-base md:text-lg lg:text-xl font-normal">Browsing vehicles in</h2>
-              <span className="text-base md:text-lg lg:text-xl font-normal border border-foreground px-2 py-1">{selectedCountry || userCountry}</span>
-            </div>
-
-            {/* Brand Filter */}
-            <div className="overflow-x-auto pb-2 -mx-4 px-4">
-              <CategoryFilter selected={selectedBrand} onSelect={setSelectedBrand} />
-            </div>
+            <VehicleSearch
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              selectedBrand={selectedBrand}
+              onBrandChange={setSelectedBrand}
+              priceRange={priceRange}
+              onPriceRangeChange={setPriceRange}
+              yearRange={yearRange}
+              onYearRangeChange={setYearRange}
+              mileageMax={mileageMax}
+              onMileageMaxChange={setMileageMax}
+            />
 
             {/* Location Filter */}
             <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm text-muted-foreground">Location:</span>
               <LocationFilter
                 selectedCountry={selectedCountry}
                 selectedCity={selectedCity}
                 onCountryChange={setSelectedCountry}
                 onCityChange={setSelectedCity}
               />
+            </div>
+
+            {/* Results count */}
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-muted-foreground">
+                Showing {filteredVehicles.length} of {vehicles.length} vehicles
+                {selectedCountry && ` in ${selectedCountry}`}
+              </p>
               {hasActiveFilters && (
                 <button
-                  onClick={clearFilters}
+                  onClick={clearAllFilters}
                   className="px-3 py-1.5 text-[11px] font-medium uppercase border border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground transition-colors"
                 >
-                  Clear Filters
+                  Clear All Filters
                 </button>
               )}
             </div>
           </div>
 
           {/* Vehicle Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-8 md:mt-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {loading ? (
               <div className="col-span-full text-center py-12">Loading vehicles...</div>
             ) : filteredVehicles.length === 0 ? (
@@ -256,7 +300,7 @@ const Discover = () => {
                   <div>
                     <p className="mb-4">No vehicles found matching your filters</p>
                     <button
-                      onClick={clearFilters}
+                      onClick={clearAllFilters}
                       className="px-4 py-2 text-sm font-medium uppercase border border-foreground hover:bg-foreground hover:text-background transition-colors"
                     >
                       Clear All Filters
@@ -271,7 +315,7 @@ const Discover = () => {
                 <div 
                   key={vehicle.id} 
                   className="animate-fade-in" 
-                  style={{ animationDelay: `${1.0 + (index * 0.1)}s`, animationFillMode: 'both' }}
+                  style={{ animationDelay: `${0.1 + (index * 0.05)}s`, animationFillMode: 'both' }}
                 >
                   <VehicleCard vehicle={vehicle} />
                 </div>
