@@ -142,7 +142,7 @@ async function scrapeFromSite(site: keyof typeof SITE_CONFIGS, firecrawlKey: str
       date: new Date().toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' }),
       time: 'Available Now',
       address: listing.location || 'South Africa',
-      background_image_url: listing.image_url || `https://images.unsplash.com/photo-${1494976388531 + Math.floor(Math.random() * 1000)}-d1058494cdd8?w=800&auto=format&fit=crop`,
+      background_image_url: listing.image_url || null,
       target_date: new Date().toISOString(),
       creator: siteConfig.name,
       category: detectBrand(listing.title || ''),
@@ -190,19 +190,6 @@ function generateFallbackListings(count: number): any[] {
   const conditions = ['excellent', 'good', 'fair'];
   const sources = Object.values(SITE_CONFIGS);
   
-  const carImages = [
-    'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1502877338535-766e1452684a?w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1553440569-bcc63803a83d?w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1542362567-b07e54358753?w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&auto=format&fit=crop',
-  ];
-
   const listings = [];
   
   for (let i = 0; i < count; i++) {
@@ -228,7 +215,7 @@ function generateFallbackListings(count: number): any[] {
       date: new Date().toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' }),
       time: 'Available Now',
       address: city,
-      background_image_url: carImages[Math.floor(Math.random() * carImages.length)],
+      background_image_url: null,
       target_date: new Date().toISOString(),
       creator: source.name,
       category: carBrand.brand,

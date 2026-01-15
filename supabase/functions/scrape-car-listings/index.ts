@@ -181,7 +181,7 @@ Deno.serve(async (req) => {
       date: new Date().toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' }),
       time: 'Scraped',
       address: listing.location || 'South Africa',
-      background_image_url: listing.image_url || 'https://via.placeholder.com/400x300?text=No+Image',
+      background_image_url: listing.image_url || null,
       target_date: new Date().toISOString(),
       creator: siteConfig.name,
       category: detectBrand(listing.title || ''),
