@@ -1,16 +1,20 @@
-export const EVENT_CATEGORIES = [
-  { value: 'music', label: 'Music', emoji: '🎵' },
-  { value: 'sports', label: 'Sports', emoji: '⚽' },
-  { value: 'tech', label: 'Tech', emoji: '💻' },
-  { value: 'arts', label: 'Arts & Culture', emoji: '🎨' },
-  { value: 'food', label: 'Food & Drink', emoji: '🍽️' },
-  { value: 'fashion', label: 'Fashion', emoji: '👗' },
-  { value: 'business', label: 'Business', emoji: '💼' },
-  { value: 'comedy', label: 'Comedy', emoji: '😂' },
-  { value: 'nightlife', label: 'Nightlife', emoji: '🌙' },
-  { value: 'wellness', label: 'Wellness', emoji: '🧘' },
-  { value: 'community', label: 'Community', emoji: '🤝' },
-  { value: 'other', label: 'Other', emoji: '✨' },
+export const VEHICLE_BRANDS = [
+  { value: 'toyota', label: 'Toyota', emoji: '🚗' },
+  { value: 'volkswagen', label: 'Volkswagen', emoji: '🚙' },
+  { value: 'mazda', label: 'Mazda', emoji: '🏎️' },
+  { value: 'hyundai', label: 'Hyundai', emoji: '🚘' },
+  { value: 'bmw', label: 'BMW', emoji: '🔵' },
+  { value: 'mercedes', label: 'Mercedes', emoji: '⭐' },
+  { value: 'ford', label: 'Ford', emoji: '🔷' },
+  { value: 'nissan', label: 'Nissan', emoji: '🔴' },
+  { value: 'honda', label: 'Honda', emoji: '🔘' },
+  { value: 'audi', label: 'Audi', emoji: '💫' },
+  { value: 'kia', label: 'Kia', emoji: '🟢' },
+  { value: 'other', label: 'Other', emoji: '🚐' },
 ] as const;
 
-export type EventCategory = typeof EVENT_CATEGORIES[number]['value'];
+export type VehicleBrand = typeof VEHICLE_BRANDS[number]['value'];
+
+// Keep legacy exports for backwards compatibility during migration
+export const EVENT_CATEGORIES = VEHICLE_BRANDS;
+export type EventCategory = VehicleBrand;

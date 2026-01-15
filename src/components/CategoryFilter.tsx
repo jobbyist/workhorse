@@ -1,10 +1,10 @@
 import React from 'react';
-import { EVENT_CATEGORIES, EventCategory } from '@/constants/eventCategories';
+import { VEHICLE_BRANDS, VehicleBrand } from '@/constants/eventCategories';
 import { cn } from '@/lib/utils';
 
 interface CategoryFilterProps {
-  selected: EventCategory | null;
-  onSelect: (category: EventCategory | null) => void;
+  selected: VehicleBrand | null;
+  onSelect: (brand: VehicleBrand | null) => void;
 }
 
 export const CategoryFilter: React.FC<CategoryFilterProps> = ({ selected, onSelect }) => {
@@ -19,21 +19,21 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({ selected, onSele
             : "bg-background text-foreground border-border hover:border-foreground"
         )}
       >
-        All
+        All Brands
       </button>
-      {EVENT_CATEGORIES.map((category) => (
+      {VEHICLE_BRANDS.map((brand) => (
         <button
-          key={category.value}
-          onClick={() => onSelect(category.value)}
+          key={brand.value}
+          onClick={() => onSelect(brand.value)}
           className={cn(
             "px-3 py-1.5 text-[11px] font-medium uppercase border transition-colors flex items-center gap-1.5",
-            selected === category.value
+            selected === brand.value
               ? "bg-foreground text-background border-foreground"
               : "bg-background text-foreground border-border hover:border-foreground"
           )}
         >
-          <span>{category.emoji}</span>
-          <span>{category.label}</span>
+          <span>{brand.emoji}</span>
+          <span>{brand.label}</span>
         </button>
       ))}
     </div>

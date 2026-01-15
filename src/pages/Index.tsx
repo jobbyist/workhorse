@@ -1,7 +1,7 @@
-import { EventDetailPage } from '@/components/EventDetailPage';
+import Discover from './Discover';
 
 const Index = () => {
-  return <EventDetailPage />;
+  return <Discover />;
 };
 
 export default Index;
