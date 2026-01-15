@@ -51,7 +51,7 @@ export type Database = {
           city: string | null
           condition: string | null
           country: string | null
-          created_by: string
+          created_by: string | null
           creator: string
           date: string
           description: string
@@ -77,7 +77,7 @@ export type Database = {
           city?: string | null
           condition?: string | null
           country?: string | null
-          created_by?: string
+          created_by?: string | null
           creator: string
           date: string
           description: string
@@ -103,7 +103,7 @@ export type Database = {
           city?: string | null
           condition?: string | null
           country?: string | null
-          created_by?: string
+          created_by?: string | null
           creator?: string
           date?: string
           description?: string
