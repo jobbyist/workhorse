@@ -49,51 +49,78 @@ export type Database = {
           background_image_url: string
           category: string
           city: string | null
+          condition: string | null
           country: string | null
           created_by: string
           creator: string
           date: string
           description: string
+          fuel_type: string | null
           id: string
+          is_scraped: boolean | null
+          mileage: number | null
+          seller_email: string | null
+          seller_phone: string | null
+          source_url: string | null
           target_date: string
           ticket_price: number | null
           ticket_url: string | null
           time: string
           title: string
+          transmission: string | null
+          year: number | null
         }
         Insert: {
           address: string
           background_image_url: string
           category?: string
           city?: string | null
+          condition?: string | null
           country?: string | null
           created_by?: string
           creator: string
           date: string
           description: string
+          fuel_type?: string | null
           id?: string
+          is_scraped?: boolean | null
+          mileage?: number | null
+          seller_email?: string | null
+          seller_phone?: string | null
+          source_url?: string | null
           target_date: string
           ticket_price?: number | null
           ticket_url?: string | null
           time: string
           title: string
+          transmission?: string | null
+          year?: number | null
         }
         Update: {
           address?: string
           background_image_url?: string
           category?: string
           city?: string | null
+          condition?: string | null
           country?: string | null
           created_by?: string
           creator?: string
           date?: string
           description?: string
+          fuel_type?: string | null
           id?: string
+          is_scraped?: boolean | null
+          mileage?: number | null
+          seller_email?: string | null
+          seller_phone?: string | null
+          source_url?: string | null
           target_date?: string
           ticket_price?: number | null
           ticket_url?: string | null
           time?: string
           title?: string
+          transmission?: string | null
+          year?: number | null
         }
         Relationships: []
       }
@@ -141,6 +168,47 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      vehicle_inquiries: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          phone: string | null
+          user_id: string | null
+          vehicle_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          phone?: string | null
+          user_id?: string | null
+          vehicle_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string | null
+          user_id?: string | null
+          vehicle_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vehicle_inquiries_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
