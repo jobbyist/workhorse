@@ -192,7 +192,7 @@ export const VehicleDetail: React.FC = () => {
                 </div>
                 <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium mb-2">{vehicle.title}</h1>
                 {vehicle.ticket_price && (
-                  <p className="text-3xl md:text-4xl font-medium text-[#FA76FF]">
+                  <p className="text-3xl md:text-4xl font-medium text-blue-600">
                     R{vehicle.ticket_price.toLocaleString()}
                   </p>
                 )}
@@ -262,7 +262,7 @@ export const VehicleDetail: React.FC = () => {
                     href={`https://maps.google.com/maps?q=${encodeURIComponent(vehicle.address)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-[#FA76FF] hover:underline mt-1 inline-block"
+                    className="text-sm text-blue-600 hover:underline mt-1 inline-block"
                   >
                     Get directions →
                   </a>
@@ -278,7 +278,7 @@ export const VehicleDetail: React.FC = () => {
                       href={vehicle.source_url} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-[#FA76FF] hover:underline"
+                      className="text-blue-600 hover:underline"
                     >
                       original listing
                     </a>
@@ -353,7 +353,7 @@ export const VehicleDetail: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-3 bg-foreground text-background font-medium uppercase text-sm hover:bg-[#FA76FF] hover:text-foreground transition-colors disabled:opacity-50"
+                    className="w-full py-3 bg-foreground text-background font-medium uppercase text-sm hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-700 hover:text-white transition-colors disabled:opacity-50"
                   >
                     {isSubmitting ? 'Sending...' : 'Send Inquiry'}
                   </button>

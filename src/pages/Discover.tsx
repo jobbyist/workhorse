@@ -57,7 +57,7 @@ const VehicleCard = ({
       </div>
       <div className="absolute top-4 left-4 flex flex-col gap-0">
         {vehicle.ticket_price && (
-          <div className="bg-[#FA76FF] border border-foreground px-3 h-[23px] flex items-center">
+          <div className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 border border-blue-700 px-3 h-[23px] flex items-center text-white">
             <div className="text-[11px] font-medium uppercase leading-none">
               R{vehicle.ticket_price.toLocaleString()}
             </div>

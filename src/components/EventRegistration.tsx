@@ -147,7 +147,7 @@ export const EventRegistration: React.FC<EventRegistrationProps> = ({
         className={`flex h-[50px] justify-center items-center gap-2.5 border relative px-2.5 py-3.5 border-solid transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed w-[calc(100%-50px)] z-10 ${
           isPastEvent 
             ? 'bg-gray-400 border-gray-400 cursor-not-allowed' 
-            : 'bg-[#1A1A1A] border-[#1A1A1A] group-hover:w-full group-hover:bg-[#FA76FF] group-hover:border-[#FA76FF]'
+            : 'bg-foreground border-foreground group-hover:w-full group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-blue-700 group-hover:border-blue-600'
         }`}
         aria-label={isPastEvent ? "Event has ended" : isRegistered ? "Unregister from event" : "Register for event"}
       >

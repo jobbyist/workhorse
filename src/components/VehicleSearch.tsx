@@ -89,7 +89,7 @@ export const VehicleSearch: React.FC<VehicleSearchProps> = ({
           <SlidersHorizontal className="w-5 h-5" />
           <span className="hidden sm:inline text-[11px] font-medium uppercase">Filters</span>
           {hasActiveFilters && (
-            <span className="w-2 h-2 rounded-full bg-[#FA76FF]" />
+            <span className="w-2 h-2 rounded-full bg-blue-600" />
           )}
         </button>
       </div>
@@ -215,7 +215,7 @@ export const VehicleSearch: React.FC<VehicleSearchProps> = ({
           <div className="flex gap-3 pt-2">
             <button
               onClick={applyFilters}
-              className="px-6 py-2.5 bg-foreground text-background text-[11px] font-medium uppercase hover:bg-[#FA76FF] hover:text-foreground transition-colors"
+              className="px-6 py-2.5 bg-foreground text-background text-[11px] font-medium uppercase hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-700 hover:text-white transition-colors"
             >
               Apply Filters
             </button>
